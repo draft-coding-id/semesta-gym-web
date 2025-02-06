@@ -29,7 +29,7 @@ export default function Members() {
         <h2>Data Anggota</h2>
         <div className='d-flex gap-4'>
           <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" className='d-flex align-items-center gap-2'>
+            <Dropdown.Toggle id="dropdown-basic" className='d-flex align-items-center gap-2 rounded-pill'>
             <Plus size={20} /> Tambah
             </Dropdown.Toggle>
 
@@ -40,7 +40,7 @@ export default function Members() {
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" className='px-4'>
+            <Dropdown.Toggle id="dropdown-basic" className='px-4 rounded-pill '>
               {filter === 'anggota' ? 'Anggota' : filter === 'members' ? 'Members' : 'Course'}
             </Dropdown.Toggle>
 

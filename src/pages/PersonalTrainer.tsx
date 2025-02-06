@@ -37,9 +37,9 @@ export default function PersonalTrainer() {
     <Layout>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Data Personal Trainer</h2>
-        <Button variant="primary" className="d-flex align-items-center gap-2">
-          <Plus size={20} />
+        <Button variant="primary" className="d-flex align-items-center gap-2 rounded-pill px-3">
           Tambah
+          <Plus size={20} />
         </Button>
       </div>
 
