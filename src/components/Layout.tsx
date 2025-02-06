@@ -10,6 +10,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
@@ -36,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="sidebar p-0">
             <div className="p-3 profile">
               <div className='d-flex justify-content-center align-items-center flex-column'>
-                <h4 className="text-black">Semesta GYM</h4>
+                <h4 className="text-black">{user.name}</h4>
                 <span className='badge'>Admin</span>
               </div>
             </div>

@@ -48,6 +48,14 @@ export default function Transactions() {
     setTransactions(filteredTransactions);
   }
 
+  const handleResetFilter = () => {
+    setShow(!show)
+    
+    setFilterMonth('');
+    setFilterYear('');
+    setTransactions(transactions);
+  }
+
   return (
     <Layout>
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -97,7 +105,8 @@ export default function Transactions() {
                       </Form.Select>
                     </Col>
                   </Row>
-                  <div className='d-flex justify-content-center mt-4'>
+                  <div className='d-flex justify-content-center mt-4 gap-4'>
+                    <Button variant="secondary" onClick={handleResetFilter}>Reset</Button>
                     <Button variant="primary" onClick={handleFilter}>Confirm</Button>
                   </div>
                 </Card.Body>

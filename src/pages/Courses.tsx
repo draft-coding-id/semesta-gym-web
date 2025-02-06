@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import { Table, Button, Form, InputGroup } from 'react-bootstrap';
 import { Search, Plus } from 'lucide-react';
@@ -33,9 +33,9 @@ export default function Courses() {
     <Layout>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Data Course</h2>
-        <Button variant="primary" className="d-flex align-items-center gap-2">
-          <Plus size={20} />
+        <Button variant="primary" className="d-flex align-items-center gap-2 rounded-pill px-3">
           Tambah Course
+          <Plus size={20} />
         </Button>
       </div>
 
