@@ -27,16 +27,45 @@ export const api = {
     }
   },
 
-  async post(endpoint: string, data: any) {
+  async post(endpoint: string, data: any, headers: any = {}) {
     try {
       const response = await axios.post(`${BASE_URL}/api${endpoint}`, data, {
-        headers: this.getHeaders(),
+        headers: { ...this.getHeaders(), ...headers.headers },
       });
       return response.data;
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      }
       throw new Error('API request failed');
     }
   },
 
-  // Add other methods (PUT, DELETE, etc.) as needed
+  async put(endpoint: string, data: any, headers: any = {}) {
+    try {
+      const response = await axios.put(`${BASE_URL}/api${endpoint}`, data, {
+        headers: { ...this.getHeaders(), ...headers.headers },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      }
+      throw new Error('API request failed');
+    }
+  },
+
+  async delete(endpoint: string) {
+    try {
+      const response = await axios.delete(`${BASE_URL}/api${endpoint}`, {
+        headers: this.getHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      }
+      throw new Error('API request failed');
+    }
+  },
 };

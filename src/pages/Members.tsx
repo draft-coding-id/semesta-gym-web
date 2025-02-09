@@ -3,9 +3,9 @@ import Layout from '../components/Layout';
 import { Dropdown } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
 import { api } from '../services/api';
-import Anggota from '../components/personal-trainer/Anggota';
-import ListMembers from '../components/personal-trainer/Members';
-import Course from '../components/personal-trainer/Course';
+import Anggota from '../components/members/Anggota';
+import ListMembers from '../components/members/Members';
+import Course from '../components/members/Course';
 
 export default function Members() {
   const [members, setMembers] = useState([]);

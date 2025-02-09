@@ -1,33 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { Table, Button, Form, InputGroup } from 'react-bootstrap';
 import { Search, Plus } from 'lucide-react';
+import { api } from '../services/api';
 
-// Dummy data
-const initialCourses = [
-  {
-    id: 1,
-    name: 'Yoga Basic',
-    trainer: 'Sarah Johnson',
-    schedule: 'Senin & Rabu, 08:00',
-    capacity: '15',
-    enrolled: '12',
-    price: 'Rp 300.000'
-  },
-  {
-    id: 2,
-    name: 'HIIT Training',
-    trainer: 'Mike Wilson',
-    schedule: 'Selasa & Kamis, 17:00',
-    capacity: '20',
-    enrolled: '18',
-    price: 'Rp 400.000'
-  }
-];
+interface Course {
+  id: number;
+  picture: string;
+  name: string;
+  TrainingFocu: any;
+  numberOfPractices: number;
+}
 
 export default function Courses() {
-  const [courses] = useState(initialCourses);
+  const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
+  const [courses, setCourses] = useState<Course[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    api.get('/courses/data-course').then(res => {
+      setCourses(res)
+    }).catch(error => {
+      console.error(error);
+    });
+  }, []);
+
+  const filteredCourses = courses.filter((course) => {
+    return course.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <Layout>
@@ -55,29 +55,27 @@ export default function Courses() {
         </Form.Group>
       </div>
 
-      <Table striped bordered hover>
+      <Table hover>
         <thead>
           <tr>
             <th>No</th>
+            <th>Gambar</th>
             <th>Nama Course</th>
-            <th>Trainer</th>
-            <th>Jadwal</th>
-            <th>Kapasitas</th>
-            <th>Terdaftar</th>
-            <th>Harga</th>
+            <th>Fokus Pelatihan</th>
+            <th>Jumlah Praktik</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, index) => (
+          {filteredCourses.map((course, index) => (
             <tr key={course.id}>
               <td>{index + 1}</td>
+              <td>
+                <img src={`${BASE_URL}/${course.picture}`} alt={course.name} width={50} height={50}/>
+              </td>
               <td>{course.name}</td>
-              <td>{course.trainer}</td>
-              <td>{course.schedule}</td>
-              <td>{course.capacity}</td>
-              <td>{course.enrolled}</td>
-              <td>{course.price}</td>
+              <td>{course.TrainingFocu.name}</td>
+              <td>{course.numberOfPractices}</td>
               <td>
                 <Button variant="link" className="p-0">
                   Edit

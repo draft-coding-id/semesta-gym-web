@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { Search, Plus } from 'lucide-react';
 import { api } from '../services/api';
 import logo from '../assets/images/logo.png'
+import CreateModal from '../components/personal-trainer/CreateModal';
+import EditModal from '../components/personal-trainer/EditModal';
 
 interface Trainer {
   id: number;
@@ -19,7 +21,10 @@ interface Trainer {
 export default function PersonalTrainer() {
   const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL
   const [trainers, setTrainers] = useState<Trainer[]>([]);
+  const [trainer, setTrainer] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [createModalShow, setCreateModalShow] = useState(false);
+  const [editModalShow, setEditModalShow] = useState(false);
 
   useEffect(() => {
     api.get('/trainers').then(res => {
@@ -27,17 +32,27 @@ export default function PersonalTrainer() {
     }).catch(error => {
       console.error(error);
     });
-  }, []);
+  }, [createModalShow, editModalShow]);
   
   const filteredTrainers = trainers.filter((trainer) => {
     return trainer.User.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const handleEditTrainer = (e: any) => {
+    api.get(`/trainers/${e}`).then(res => {
+      setTrainer(res);
+    }).catch(error => {
+      console.error(error);
+    });
+  }
   
   return (
     <Layout>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Data Personal Trainer</h2>
-        <Button variant="primary" className="d-flex align-items-center gap-2 rounded-pill px-3">
+        <Button variant="primary" className="d-flex align-items-center gap-2 rounded-pill px-3"
+          onClick={() => setCreateModalShow(true)}
+        >
           Tambah
           <Plus size={20} />
         </Button>
@@ -78,7 +93,7 @@ export default function PersonalTrainer() {
             <tr key={trainer.id}>
               <td>{index + 1}</td>
               <td>
-                <img src={trainer.picture !== null ? BASE_URL + trainer.picture : logo} alt='' style={{ width: '50px', height: '50px' }} />
+                <img src={trainer.picture !== null ? BASE_URL + '/' + trainer.picture : logo} alt='' style={{ width: '50px', height: '50px' }} />
               </td>
               <td>{trainer.User.name}</td>
               <td>{trainer.TrainingFocus.map((focus: any) => focus.name).join(', ')}</td>
@@ -87,7 +102,11 @@ export default function PersonalTrainer() {
               <td>{trainer.hoursOfPractice}</td>
               <td>{trainer.price}</td>
               <td>
-                <Button variant="link" className="p-0">
+                <Button
+                  variant="link" 
+                  className="p-0"
+                  onClick={() => {setEditModalShow(true); handleEditTrainer(trainer.id)}}
+                  >
                   Edit
                 </Button>
               </td>
@@ -95,6 +114,16 @@ export default function PersonalTrainer() {
           ))}
         </tbody>
       </Table>
+
+      <CreateModal
+        show={createModalShow}
+        onHide={() => setCreateModalShow(false)}
+      />
+      <EditModal
+        show={editModalShow}
+        onHide={() => setEditModalShow(false)}
+        trainer={trainer}
+      />
     </Layout>
   );
 }
