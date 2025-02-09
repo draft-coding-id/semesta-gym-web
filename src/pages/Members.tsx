@@ -6,10 +6,12 @@ import { api } from '../services/api';
 import Anggota from '../components/members/Anggota';
 import ListMembers from '../components/members/Members';
 import Course from '../components/members/Course';
+import ModalCreateAnggota from '../components/members/ModalCreateAnggota';
 
 export default function Members() {
   const [members, setMembers] = useState([]);
   const [filter, setFilter] = useState('anggota');
+  const [createAnggotaModalShow, setCreateAnggotaModalShow] = useState(false);
 
   useEffect(() => {
     api.get('/user').then(res => {
@@ -20,7 +22,7 @@ export default function Members() {
     }).catch(error => {
       console.error(error);
     });
-  }, []);
+  }, [createAnggotaModalShow]);
   console.log(members)
 
   return (
@@ -34,7 +36,7 @@ export default function Members() {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Anggota</Dropdown.Item>
+              <Dropdown.Item onClick={() => setCreateAnggotaModalShow(true)}>Anggota</Dropdown.Item>
               <Dropdown.Item href="#/action-2">Members</Dropdown.Item>
               <Dropdown.Item href="#/action-3">Course</Dropdown.Item>
             </Dropdown.Menu>
@@ -66,6 +68,11 @@ export default function Members() {
       ) : (
         <Course members={members}/>
       )}
+
+      <ModalCreateAnggota
+        show={createAnggotaModalShow}
+        onHide={() => setCreateAnggotaModalShow(false)}
+      />
     </Layout>
   );
 }

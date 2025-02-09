@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { api } from "../../services/api";
 import { Plus } from "lucide-react";
 import Select from "react-select";
@@ -44,6 +44,17 @@ export default function CreateModal({ ...props }) {
         setShowAlert(true);
         return;
       }
+      setData({
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        trainingFocus: [],
+        hoursOfPractice: '',
+        price: '',
+        description: '',
+        picture: undefined
+      });
       props.onHide();
     }).catch(error => {
       console.error(error);
@@ -141,12 +152,15 @@ export default function CreateModal({ ...props }) {
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="price">Harga</Form.Label>
-            <Form.Control
-              type="text"
-              id="price"
-              aria-describedby=""
-              onChange={(e) => setData({ ...data, price: e.target.value })}
-            />
+            <InputGroup>
+              <InputGroup.Text id="basic-addon1">Rp</InputGroup.Text>
+              <Form.Control
+                type="text"
+                id="price"
+                aria-describedby=""
+                onChange={(e) => setData({ ...data, price: e.target.value })}
+              />
+            </InputGroup>
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="desc">Deskripsi</Form.Label>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { api } from "../../services/api";
 import Select from "react-select";
 
@@ -106,7 +106,7 @@ export default function EditModal({ ...props }) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Edit Personal Trainer
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -194,13 +194,16 @@ export default function EditModal({ ...props }) {
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="price">Harga</Form.Label>
-            <Form.Control
-              type="text"
-              id="price"
-              aria-describedby=""
-              value={data.price}
-              onChange={(e) => setData({ ...data, price: e.target.value })}
-            />
+            <InputGroup>
+              <InputGroup.Text id="basic-addon1">Rp</InputGroup.Text>
+              <Form.Control
+                type="text"
+                id="price"
+                aria-describedby=""
+                value={data.price}
+                onChange={(e) => setData({ ...data, price: e.target.value })}
+              />
+            </InputGroup>
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="desc">Deskripsi</Form.Label>
