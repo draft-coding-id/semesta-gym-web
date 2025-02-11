@@ -7,11 +7,15 @@ import Anggota from '../components/members/Anggota';
 import ListMembers from '../components/members/Members';
 import Course from '../components/members/Course';
 import ModalCreateAnggota from '../components/members/ModalCreateAnggota';
+import ModalCreateMember from '../components/members/ModalCreateMember';
+import ModalCreateCourse from '../components/members/ModalCreateCourse';
 
 export default function Members() {
   const [members, setMembers] = useState([]);
   const [filter, setFilter] = useState('anggota');
   const [createAnggotaModalShow, setCreateAnggotaModalShow] = useState(false);
+  const [createMemberModalShow, setCreateMemberModalShow] = useState(false);
+  const [createCourseModalShow, setCreateCourseModalShow] = useState(false);
 
   useEffect(() => {
     api.get('/user').then(res => {
@@ -22,8 +26,11 @@ export default function Members() {
     }).catch(error => {
       console.error(error);
     });
-  }, [createAnggotaModalShow]);
-  console.log(members)
+  }, [
+    createAnggotaModalShow, 
+    createMemberModalShow,
+    createCourseModalShow
+  ]);
 
   return (
     <Layout>
@@ -37,8 +44,8 @@ export default function Members() {
 
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => setCreateAnggotaModalShow(true)}>Anggota</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Members</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Course</Dropdown.Item>
+              <Dropdown.Item onClick={() => setCreateMemberModalShow(true)}>Members</Dropdown.Item>
+              <Dropdown.Item onClick={() => setCreateCourseModalShow(true)}>Course</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown>
@@ -72,6 +79,16 @@ export default function Members() {
       <ModalCreateAnggota
         show={createAnggotaModalShow}
         onHide={() => setCreateAnggotaModalShow(false)}
+      />
+
+      <ModalCreateMember
+        show={createMemberModalShow}
+        onHide={() => setCreateMemberModalShow(false)}
+      />
+
+      <ModalCreateCourse
+        show={createCourseModalShow}
+        onHide={() => setCreateCourseModalShow(false)}  
       />
     </Layout>
   );
