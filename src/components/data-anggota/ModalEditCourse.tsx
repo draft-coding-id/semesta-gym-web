@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { api } from "../../services/api";
 import Select from "react-select";
-import { Plus } from "lucide-react";
+import { api } from "../../services/api";
 
-export default function ModalCreateCourse({ ...props }) {
-  const [anggota, setAnggota] = useState([]);
+export default function ModalEditCourse({ ...props }) {
+  const [anggota, setAnggota] = useState<{ id: string; name: string }[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
   const [data, setData] = useState({
+    id: '',
     userId: '',
-    price: 20000,
     startDate: '',
     endDate: ''
   });
@@ -26,8 +25,23 @@ export default function ModalCreateCourse({ ...props }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(props.anggotaCourse).length !== 0) {
+      const activeCourse = props.anggotaCourse.Courses[props.anggotaCourse.Courses.length - 1];
+
+      if (activeCourse) {
+        setData({
+          id: activeCourse.id,
+          userId: activeCourse.userId,
+          startDate: new Date(activeCourse.startDate).toISOString().split('T')[0],
+          endDate: new Date(activeCourse.endDate).toISOString().split('T')[0]
+        });
+      }
+    }
+  }, [props.show, props.anggotaCourse]);
+
   const handleSubmit = () => {
-    api.post('/courses', data).then(res => {
+    api.put('/courses/'+ data.id, data).then(res => {
       if (res.errors) {
         setAlert(res.errors);
         setShowAlert(true);
@@ -38,23 +52,43 @@ export default function ModalCreateCourse({ ...props }) {
         setShowAlert(true);
         return;
       }
-      setData({ userId: '', price: 20000, startDate: '', endDate: '' });
+      setData({ id: '', userId: '', startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
   }
-    
+
+  const handleDelete = () => {
+    api.delete('/courses/'+ data.id).then(res => {
+      if (res.errors) {
+        setAlert(res.errors);
+        setShowAlert(true);
+        return;
+      }
+      if (res.error) {
+        setAlert([res.error]);
+        setShowAlert(true);
+        return;
+      }
+      setData({ id: '', userId: '', startDate: '', endDate: '' });
+      props.onHide();
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
   return (
     <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      backdrop="static"
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Tambah Anggota Course
+          Edit Course
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -67,17 +101,19 @@ export default function ModalCreateCourse({ ...props }) {
           </ul>
         </Alert>
         }
-        <Row className="gy-3">
+                <Row className="gy-3">
           <Col lg={12}>
             <Form.Label htmlFor="anggota">Pilih Anggota</Form.Label>
             <Select
+              key={data.userId}
+              defaultValue={{ value: data.userId, label: anggota.find((anggota: any) => anggota.id === data.userId)?.name }}
               className="basic-single"
               classNamePrefix="select"
               isClearable={true}
               isSearchable={true}
               name="anggota"
               options={anggota.map((anggota: any) => ({ value: anggota.id, label: anggota.name }))}
-              onChange={(e) => setData({ ...data, userId: e?.value })}
+              onChange={(e) => setData({ ...data, userId: e?.value || '' })}
             />
           </Col>
           <Col lg={6}>
@@ -86,6 +122,7 @@ export default function ModalCreateCourse({ ...props }) {
               type="date"
               id="startDate"
               aria-describedby=""
+              value={data.startDate}
               onChange={(e) => setData({ ...data, startDate: e.target.value })}
             />
           </Col>
@@ -95,28 +132,40 @@ export default function ModalCreateCourse({ ...props }) {
               type="date"
               id="endDate"
               aria-describedby=""
+              value={data.endDate}
               onChange={(e) => setData({ ...data, endDate: e.target.value })}
             />
           </Col>
         </Row>
       </Modal.Body>
-      <Modal.Footer>
-        <Button 
-          variant="secondary"
-          onClick={() => {
-            props.onHide();
-            setData({ userId: '', price: 20000, startDate: '', endDate: '' });
+      <Modal.Footer className="d-flex justify-content-between">
+      <Button 
+          variant="secondary" 
+          onClick={() => {props.onHide(); setData({
+              id: '',
+              userId: '',
+              startDate: '',
+              endDate: ''
+            })
           }}
         >
           Close
         </Button>
-        <Button
-          className="px-5"
-          onClick={handleSubmit}
-        >
-          Simpan
-          <Plus size={20} />
-        </Button>
+        <div className="d-flex gap-3">
+          <Button
+            className="px-4" 
+            onClick={handleSubmit}
+          >
+            Simpan
+          </Button>
+          <Button 
+            variant="danger" 
+            className="px-4"
+            onClick={handleDelete}
+          >
+            Hapus
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   )

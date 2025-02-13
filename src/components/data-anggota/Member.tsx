@@ -1,13 +1,40 @@
-import { Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 import { Badge, Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Plus, Search } from "lucide-react";
+import ModalEditMember from "./ModalEditMember";
+import ModalCreateMember from "./ModalCreateMember";
 
-interface MembersProps {
-  members: any[];
+interface Member {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  UserMemberships: any[];
 }
 
-export default function Members({ members } : MembersProps) {
+export default function Member() {
+  const [members, setMembers] = useState<Member[]>([]);
+  const [member, setMember] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [createModalShow, setCreateModalShow] = useState(false);
+  const [editModalShow, setEditModalShow] = useState(false);
+
+  useEffect(() => {
+    api.get('/user').then(res => {
+      const members = res.filter((user: any) => {
+        return user.role === 'member';
+      });
+      setMembers(members);
+    }).catch(error => {
+      console.error(error);
+    });
+  }, [
+    createModalShow,
+    editModalShow
+  ]);
+
   const listMembers = members.filter((user: any) => {
     return user.UserMemberships.length !== 0;
   }).filter((user: any) => {
@@ -19,14 +46,15 @@ export default function Members({ members } : MembersProps) {
                 member.phone.includes(searchTerm);
     return data;
   });
+
   return (
-    <>
+    <div>
       <div className="mb-4 d-flex justify-content-between">
         <Form.Group style={{ width: '300px' }}>
           <InputGroup>
             <Form.Control
               type="text"
-              placeholder="Cari members..."
+              placeholder="Cari member..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -35,7 +63,12 @@ export default function Members({ members } : MembersProps) {
             </InputGroup.Text>
           </InputGroup>
         </Form.Group>
+        <Button variant="primary" className="d-flex align-items-center gap-2 rounded-pill px-3" onClick={() => setCreateModalShow(true)}>
+          Tambah Member
+          <Plus size={20} />
+        </Button>
       </div>
+
       <Table hover>
         <thead>
           <tr>
@@ -60,7 +93,14 @@ export default function Members({ members } : MembersProps) {
                 <Badge bg="success" pill>Member</Badge>
               </td>
               <td>
-                <Button variant="link" className="p-0">
+                <Button 
+                  variant="link" 
+                  className="p-0"
+                  onClick={() => {
+                    setEditModalShow(true);
+                    setMember(member);
+                  }}
+                >
                   Edit
                 </Button>
               </td>
@@ -68,6 +108,17 @@ export default function Members({ members } : MembersProps) {
           ))}
         </tbody>
       </Table>
-    </>
-  );
+
+      <ModalCreateMember
+        show={createModalShow}
+        onHide={() => setCreateModalShow(false)}
+      />
+
+      <ModalEditMember
+        show={editModalShow}
+        onHide={() => setEditModalShow(false)}
+        member={member}
+      />
+    </div>
+  )
 }

@@ -57,6 +57,7 @@ export default function EditModal({ ...props }) {
         description: ''
       });
       props.onHide();
+      setShowAlert(false);
     }).catch(error => {
       console.error(error);
     });
