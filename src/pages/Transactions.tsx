@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import { Table, Form, InputGroup, Dropdown, Card, Button, Row, Col } from 'react-bootstrap';
 import { Search } from 'lucide-react';
 import { api } from '../services/api';
+import numeral from 'numeral';
 
 interface Transactions {
   id: number;
@@ -128,7 +129,7 @@ export default function Transactions() {
           </Form.Group>
         </div>
         <div>
-          <h5>Total pembayaran: Rp.{totalAmount}</h5>
+          <h5>Total pembayaran: Rp.{numeral(totalAmount).format('0,0')}</h5>
         </div>
       </div>
 
@@ -149,7 +150,7 @@ export default function Transactions() {
               <td>{transaction.User.name}</td>
               <td>{new Date(transaction.paidAt).toLocaleDateString()}</td>
               <td>{transaction.title}</td>
-              <td>{transaction.amount}</td>
+              <td>{numeral(transaction.amount).format('0,0')}</td>
             </tr>
           ))}
         </tbody>

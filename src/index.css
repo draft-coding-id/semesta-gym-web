@@ -88,3 +88,8 @@ body {
   padding: 2rem;
   border-radius: 0.8rem;
 }
+
+.bg-black {
+  background-color: #000;
+  color: white;
+}

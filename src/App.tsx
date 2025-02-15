@@ -7,6 +7,12 @@ import Transactions from './pages/Transactions';
 import Courses from './pages/Courses';
 import { useAuth } from './contexts/AuthContext';
 import DataAnggota from './pages/DataAnggota';
+import Home from './pages/Home';
+import Map from './pages/Map';
+import About from './pages/About';
+import Register from './pages/Register';
+import RegisterAnggota from './pages/RegisterAnggota';
+import RegisterTrainer from './pages/RegisterTrainer';
 
 function App() {
   return (
@@ -18,7 +24,14 @@ function App() {
         <Route path="/members" element={<PrivateRoute><DataAnggota /></PrivateRoute>} />
         <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
         <Route path="/courses" element={<PrivateRoute><Courses /></PrivateRoute>} />
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/map" element={<Map/>} />
+        <Route path="/about" element={<About/>} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/register-anggota" element={<RegisterAnggota/>} />
+        <Route path="/register-trainer" element={<RegisterTrainer/>} />
+
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </Router>
   );

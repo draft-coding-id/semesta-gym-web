@@ -6,6 +6,7 @@ import { api } from '../services/api';
 import logo from '../assets/images/logo.png'
 import CreateModal from '../components/personal-trainer/CreateModal';
 import EditModal from '../components/personal-trainer/EditModal';
+import numeral from 'numeral';
 
 interface Trainer {
   id: number;
@@ -100,7 +101,7 @@ export default function PersonalTrainer() {
               <td>{trainer.description}</td>
               <td>{trainer.User.phone}</td>
               <td>{trainer.hoursOfPractice}</td>
-              <td>{trainer.price}</td>
+              <td>{numeral(trainer.price).format('0,0')}</td>
               <td>
                 <Button
                   variant="link" 
