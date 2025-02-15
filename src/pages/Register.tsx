@@ -8,7 +8,10 @@ export default function Register() {
         <img src={RegisterBg} alt="Register" className="img-fluid" width="100%" />
       </div>
       <div className="position-absolute top-50 start-50 translate-middle">
-        <Card style={{ width: '28rem' }} className='py-3'>
+        <Card style={{ width: '28rem' }} className='p-3'>
+          <a href="/" className='text-dark fw-bold'>
+            <span>HOME</span>
+          </a>
           <Card.Body>
             <h2 className='text-center mb-3'>REGISTER</h2>
             <span>Register Role Anda</span>

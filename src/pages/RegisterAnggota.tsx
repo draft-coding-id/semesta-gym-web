@@ -1,5 +1,5 @@
 import { Alert, Button, Card, Form } from 'react-bootstrap';
-import RegisterBg from '../assets/images/register-bg.jpg';
+import RegisterBg from '../assets/images/slider-1-1.jpg';
 import { useState } from 'react';
 import { api } from '../services/api';
 

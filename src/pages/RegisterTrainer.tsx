@@ -1,5 +1,5 @@
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
-import RegisterBg from '../assets/images/register-bg.jpg';
+import RegisterBg from '../assets/images/register-pt-bg.jpg';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
