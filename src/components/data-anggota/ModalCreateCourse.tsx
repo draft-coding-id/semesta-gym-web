@@ -8,9 +8,10 @@ export default function ModalCreateCourse({ ...props }) {
   const [anggota, setAnggota] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
+  const [price] = useState(0);
   const [data, setData] = useState({
     userId: '',
-    price: 20000,
+    price: 0,
     startDate: '',
     endDate: ''
   });
@@ -21,6 +22,12 @@ export default function ModalCreateCourse({ ...props }) {
         return user.role === 'member';
       });
       setAnggota(member)
+    }).catch(error => {
+      console.error(error);
+    });
+
+    api.get('/pricelist/courses').then(res => {
+      setData({ ...data, price: res.price });
     }).catch(error => {
       console.error(error);
     });
@@ -38,7 +45,7 @@ export default function ModalCreateCourse({ ...props }) {
         setShowAlert(true);
         return;
       }
-      setData({ userId: '', price: 20000, startDate: '', endDate: '' });
+      setData({ userId: '', price: price, startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
       console.error(error);

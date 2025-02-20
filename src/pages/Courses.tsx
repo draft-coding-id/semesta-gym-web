@@ -22,10 +22,19 @@ export default function Courses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [createModalShow, setCreateModalShow] = useState(false);
   const [editModalShow, setEditModalShow] = useState(false);
+  const [priceCourse, setPriceCourse] = useState(0);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     api.get('/courses/data-course').then(res => {
       setCourses(res)
+    }).catch(error => {
+      console.error(error);
+    });
+
+    api.get('/pricelist/courses').then(res => {
+      setPriceCourse(res.price);
+      setPrice(res.price);
     }).catch(error => {
       console.error(error);
     });
@@ -43,6 +52,29 @@ export default function Courses() {
     });
   }
 
+  const handleUpdatePrice = () => {
+    if(priceCourse === 0) {
+      api.post('/pricelist', { 
+        name: 'courses',
+        price: price
+      }).then(res => {
+        alert('Price has been updated');
+        console.log(res);
+      }).catch(error => {
+        console.error(error);
+      });
+    } else {
+      api.put('/pricelist/courses', {
+        price: price
+      }).then(res => {
+        alert('Price has been updated');
+        console.log(res);
+      }).catch(error => {
+        console.error(error);
+      });
+    }
+  }
+
   return (
     <Layout>
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -53,7 +85,24 @@ export default function Courses() {
         </Button>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 d-flex justify-content-between">
+        <div className='d-flex gap-3 align-items-end'>
+          <Form.Group style={{ width: '300px' }}>
+            <Form.Label>Harga Course</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="0" 
+              value={price}
+              onChange={(e) => setPrice(parseInt(e.target.value))}
+            />
+          </Form.Group>
+          <Button 
+            variant="primary"
+            onClick={handleUpdatePrice}
+          >
+            Save
+          </Button>
+        </div>
         <Form.Group style={{ width: '300px' }}>
           <InputGroup>
             <Form.Control

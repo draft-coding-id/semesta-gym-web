@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 import PersonalTrainer from './pages/PersonalTrainer';
 import Transactions from './pages/Transactions';
 import Courses from './pages/Courses';
@@ -19,7 +19,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute><PersonalTrainer /></PrivateRoute>} />
         <Route path="/personal-trainer" element={<PrivateRoute><PersonalTrainer /></PrivateRoute>} />
         <Route path="/members" element={<PrivateRoute><DataAnggota /></PrivateRoute>} />
         <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
