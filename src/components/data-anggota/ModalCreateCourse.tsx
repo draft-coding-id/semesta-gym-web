@@ -45,6 +45,18 @@ export default function ModalCreateCourse({ ...props }) {
         setShowAlert(true);
         return;
       }
+      api.post('/payments/course', {
+        courseId: res.data.id,
+        amount: res.data.price,
+        paidAt: new Date().toISOString(),
+        userId: res.data.userId,
+        paymentStatus: 'success'
+      }).then(res => {
+        console.log(res);
+      }).catch(error => {
+        console.error(error);
+      });
+
       setData({ userId: '', price: price, startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {

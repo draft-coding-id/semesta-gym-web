@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 
 export default function ModalCreateMember({ ...props }) {
   const [anggota, setAnggota] = useState([]);
-  const [memberships, setMemberships] = useState([]);
+  const [memberships, setMemberships] = useState<{ id: string, price: number, name: string }[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
   const [data, setData] = useState({
@@ -45,6 +45,18 @@ export default function ModalCreateMember({ ...props }) {
         setShowAlert(true);
         return;
       }
+      
+      api.post('/payments/membership', {
+        userMembershipId: res.data.id,
+        amount: (memberships.find((membership: { id: string, price: number }) => membership.id === data.membershipId)?.price || 0),
+        paidAt: new Date().toISOString(),
+        userId: res.data.userId,
+        paymentStatus: 'success'
+      }).then(res => {
+        console.log(res);
+      }).catch(error => {
+        console.error(error);
+      });
       setData({ userId: '', membershipId: '', startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
