@@ -3,11 +3,23 @@ import { Alert, Button, Col, Form, InputGroup, Modal, Row } from "react-bootstra
 import { api } from "../../services/api";
 import Select from "react-select";
 
+interface Trainer {
+  name : string,
+  email : string,
+  password? : string,
+  phone : string,
+  trainingFocus : { id: string, name: string }[],
+  hoursOfPractice : string,
+  price : string,
+  description : string,
+  picture : undefined | File
+}
+
 export default function EditModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
-  const [data, setData] = useState({
+  const [data, setData] = useState<Trainer>({
     name: '',
     email: '',
     password: '',
@@ -42,19 +54,16 @@ export default function EditModal({ ...props }) {
   }, [props.show, props.trainer]);
 
   const handleSubmit = () => {
+    if (data.picture === undefined) {
+      delete data.picture;
+    }
+    if (data.password === '') {
+      delete data.password;
+    }
     const trainingFocusIds = data.trainingFocus.map((focus: any) => focus.id);
-    api.put('/trainers/'+ props.trainer.id, 
-      {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        trainingFocus: trainingFocusIds,
-        hoursOfPractice: data.hoursOfPractice,
-        price: data.price,
-        description: data.description,
-        picture: data.picture
-      },
+    data.trainingFocus = trainingFocusIds;
+
+    api.put('/trainers/'+ props.trainer.id, data,
       {
         headers: {
           'Content-Type': 'multipart/form-data'

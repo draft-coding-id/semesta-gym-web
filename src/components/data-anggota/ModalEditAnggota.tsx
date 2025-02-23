@@ -6,7 +6,13 @@ export default function ModalEditAnggota({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
+  const [data, setData] = useState<{
+    name: string;
+    email: string;
+    password?: string;
+    phone: string;
+    role: string;
+  }>({
     name: '',
     email: '',
     password: '',
@@ -28,15 +34,20 @@ export default function ModalEditAnggota({ ...props }) {
 
   const handleSubmit = () => {
     setLoading(true);
+    if (data.password === '') {
+      delete data.password;
+    }
     api.put('/user/'+ props.anggota.id +'/update', data).then(res => {
       if (res.errors) {
         setAlert(res.errors);
         setShowAlert(true);
+        setLoading(false);
         return;
       }
       if (res.error) {
         setAlert([res.error]);
         setShowAlert(true);
+        setLoading(false);
         return;
       }
       setTimeout(() => {
@@ -154,7 +165,9 @@ export default function ModalEditAnggota({ ...props }) {
       <Modal.Footer className="d-flex justify-content-between">
       <Button 
           variant="secondary" 
-          onClick={() => {props.onHide(); setData({
+          onClick={() => {props.onHide(); 
+            setShowAlert(false);
+            setData({
               name: '',
               email: '',
               password: '',
