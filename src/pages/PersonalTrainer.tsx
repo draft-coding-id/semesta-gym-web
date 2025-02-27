@@ -81,6 +81,7 @@ export default function PersonalTrainer() {
             <th>No</th>
             <th>Gambar</th>
             <th>Personal Trainer</th>
+            <th>Email</th>
             <th>Fokus Pelatihan</th>
             <th>Deskripsi</th>
             <th>No.HP</th>
@@ -97,6 +98,7 @@ export default function PersonalTrainer() {
                 <img src={trainer.picture !== null ? BASE_URL + '/' + trainer.picture : logo} alt='' style={{ width: '50px', height: '50px' }} />
               </td>
               <td>{trainer.User.name}</td>
+              <td>{trainer.User.email}</td>
               <td>{trainer.TrainingFocus.map((focus: any) => focus.name).join(', ')}</td>
               <td>{trainer.description}</td>
               <td>{trainer.User.phone}</td>

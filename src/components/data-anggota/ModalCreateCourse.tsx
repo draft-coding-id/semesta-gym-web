@@ -3,6 +3,8 @@ import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { api } from "../../services/api";
 import Select from "react-select";
 import { Plus } from "lucide-react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function ModalCreateCourse({ ...props }) {
   const [anggota, setAnggota] = useState([]);
@@ -57,11 +59,21 @@ export default function ModalCreateCourse({ ...props }) {
         console.error(error);
       });
 
+      showSwal();
+      setShowAlert(false);
       setData({ userId: '', price: price, startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = () => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: "Anggota Course berhasil ditambahkan",
+      icon: "success",
+    })
   }
     
   return (

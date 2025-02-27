@@ -74,6 +74,7 @@ export default function Member() {
           <tr>
             <th>No</th>
             <th>Nama</th>
+            <th>Email</th>
             <th>No.Hp</th>
             <th>Pembayaran</th>
             <th>Expired</th>
@@ -86,6 +87,7 @@ export default function Member() {
             <tr key={member.id}>
               <td>{index + 1}</td>
               <td>{member.name}</td>
+              <td>{member.email}</td>
               <td>{member.phone}</td>
               <td>{new Date(member.UserMemberships[member.UserMemberships.length - 1].createdAt).toLocaleDateString()}</td>
               <td>{new Date(member.UserMemberships[member.UserMemberships.length - 1].endDate).toLocaleDateString()}</td>

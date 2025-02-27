@@ -3,6 +3,8 @@ import { Alert, Button, Col, Form, InputGroup, Modal, Row } from "react-bootstra
 import { api } from "../../services/api";
 import { Plus } from "lucide-react";
 import Select from "react-select";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function CreateModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState([]);
@@ -44,6 +46,7 @@ export default function CreateModal({ ...props }) {
         setShowAlert(true);
         return;
       }
+      showSwal();
       setData({
         name: '',
         email: '',
@@ -59,6 +62,14 @@ export default function CreateModal({ ...props }) {
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = () => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: "Personal Trainer berhasil ditambahkan",
+      icon: "success",
+    })
   }
 
   return (

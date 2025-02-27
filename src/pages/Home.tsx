@@ -23,7 +23,7 @@ export default function Home() {
           <Container>
             <h1 className="text-light fw-bold">FOKUS GYM ANDA ITU APA?</h1>
             <p className="text-light">Ngapain Bingung Terus buruan Join Kita Sobat Semesta GYM</p>
-            <Button variant="light" className="mt-3">Gabung Sekarang</Button>
+            <Button href="/register" variant="light" className="mt-3">Gabung Sekarang</Button>
           </Container>
           </Col>
           <Col md={12} className="p-0">

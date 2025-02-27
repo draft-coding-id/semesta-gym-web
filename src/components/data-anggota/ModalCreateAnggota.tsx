@@ -2,6 +2,8 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { api } from "../../services/api";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function ModalCreateAnggota({ ...props }) {
   const [showAlert, setShowAlert] = useState(false);
@@ -26,11 +28,21 @@ export default function ModalCreateAnggota({ ...props }) {
         setShowAlert(true);
         return;
       }
+      showSwal();
+      setShowAlert(false);
       setData({ name: '', email: '', password: '', phone: '', role: 'member' });
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = () => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: "Anggota berhasil ditambahkan",
+      icon: "success",
+    })
   }
 
   return (

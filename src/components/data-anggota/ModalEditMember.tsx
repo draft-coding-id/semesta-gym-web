@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import Select from "react-select";
 import { api } from "../../services/api";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function ModalEditMember({ ...props }) {
   const [anggota, setAnggota] = useState<{ id: string; name: string }[]>([]);
@@ -68,6 +70,7 @@ export default function ModalEditMember({ ...props }) {
         startDate: '',
         endDate: ''
       });
+      showSwal('Member berhasil diubah');
       props.onHide();
       setShowAlert(false);
     }).catch(error => {
@@ -94,11 +97,20 @@ export default function ModalEditMember({ ...props }) {
         startDate: '',
         endDate: ''
       });
+      showSwal('Member berhasil dihapus');
       props.onHide();
       setShowAlert(false);
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = (text:string) => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: text,
+      icon: "success",
+    })
   }
 
   return (

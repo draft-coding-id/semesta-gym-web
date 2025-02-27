@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import Select from "react-select";
 import { api } from "../../services/api";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function ModalEditCourse({ ...props }) {
   const [anggota, setAnggota] = useState<{ id: string; name: string }[]>([]);
@@ -52,6 +54,8 @@ export default function ModalEditCourse({ ...props }) {
         setShowAlert(true);
         return;
       }
+
+      showSwal('Course berhasil diubah');
       setData({ id: '', userId: '', startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
@@ -71,11 +75,21 @@ export default function ModalEditCourse({ ...props }) {
         setShowAlert(true);
         return;
       }
+
+      showSwal('Course berhasil dihapus');
       setData({ id: '', userId: '', startDate: '', endDate: '' });
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = (text:string) => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: text,
+      icon: "success",
+    })
   }
 
   return (

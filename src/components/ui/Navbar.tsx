@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <NavbarLayout collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
-        <NavbarLayout.Brand href="#home">
+        <NavbarLayout.Brand href="/">
             <img
               src={Logo}
               width="90"

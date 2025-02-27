@@ -6,7 +6,7 @@ export default function NavDashboard() {
   return (
     <Navbar expand="lg" className="bg-primary-custom shadow py-3">
       <Container fluid>
-      <Navbar.Brand href="#home" className='d-flex align-items-center text-white'>
+      <Navbar.Brand href="/" className='d-flex align-items-center text-white'>
             <img
               src={logo}
               width="80"

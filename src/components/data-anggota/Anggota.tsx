@@ -64,6 +64,7 @@ export default function Anggota() {
           <tr>
             <th>No</th>
             <th>Nama</th>
+            <th>Email</th>
             <th>No.Hp</th>
             <th>Edit</th>
           </tr>
@@ -73,6 +74,7 @@ export default function Anggota() {
             <tr key={member.id}>
               <td>{index + 1}</td>
               <td>{member.name}</td>
+              <td>{member.email}</td>
               <td>{member.phone}</td>
               <td>
                 <Button 

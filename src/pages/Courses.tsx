@@ -6,6 +6,8 @@ import { api } from '../services/api';
 import CreateModal from '../components/courses/CreateModal';
 import logo from '../assets/images/logo.png';
 import EditModal from '../components/courses/EditModal';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 interface Course {
   id: number;
@@ -58,7 +60,7 @@ export default function Courses() {
         name: 'courses',
         price: price
       }).then(res => {
-        alert('Price has been updated');
+        showSwal('Harga Course berhasil diupdate');
         console.log(res);
       }).catch(error => {
         console.error(error);
@@ -67,12 +69,20 @@ export default function Courses() {
       api.put('/pricelist/courses', {
         price: price
       }).then(res => {
-        alert('Price has been updated');
+        showSwal('Harga Course berhasil diupdate');
         console.log(res);
       }).catch(error => {
         console.error(error);
       });
     }
+  }
+
+  const showSwal = (text:string) => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: text,
+      icon: "success",
+    })
   }
 
   return (
@@ -93,7 +103,7 @@ export default function Courses() {
               type="text" 
               placeholder="0" 
               value={price}
-              onChange={(e) => setPrice(parseInt(e.target.value))}
+              onChange={(e) => setPrice(e.target.value ? parseInt(e.target.value) : 0)}
             />
           </Form.Group>
           <Button 

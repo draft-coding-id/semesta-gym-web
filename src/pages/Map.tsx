@@ -10,8 +10,8 @@ export default function Map() {
         <Row className="align-items-center position-relative">
           <Col md={12} className="position-absolute ">
             <Container className="text-center">
-              <h1 className="text-light fw-bold" style={{ fontSize: '5rem' }}>SEMESTA GYM</h1>
-              <h1 className="text-light fw-light" style={{ fontSize: '3rem' }}>MAPS</h1>
+              <h1 className="text-light fw-bold banner-font">SEMESTA GYM</h1>
+              <h1 className="text-light fw-light banner-font">MAPS</h1>
             </Container>
           </Col>
           <Col md={12} className="p-0">

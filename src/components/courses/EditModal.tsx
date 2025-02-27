@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import Select from "react-select";
 import { api } from "../../services/api";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function EditModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState<{ id: string, name: string }[]>([]);
@@ -56,6 +58,7 @@ export default function EditModal({ ...props }) {
         numberOfPractices: '',
         description: ''
       });
+      showSwal('Course berhasil diubah');
       props.onHide();
       setShowAlert(false);
     }).catch(error => {
@@ -82,10 +85,19 @@ export default function EditModal({ ...props }) {
         numberOfPractices: '',
         description: ''
       });
+      showSwal('Course berhasil dihapus');
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = (text:string) => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: text,
+      icon: "success",
+    })
   }
 
   return (

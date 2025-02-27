@@ -93,3 +93,13 @@ body {
   background-color: #000;
   color: white;
 }
+
+.banner-font {
+  font-size: 2rem;
+}
+
+@media (min-width: 768px) { 
+  .banner-font {
+    font-size: 5rem;
+  }
+ }

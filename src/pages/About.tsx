@@ -10,7 +10,7 @@ export default function About() {
         <Row className="align-items-center position-relative">
           <Col md={12} className="position-absolute ">
             <Container className="text-center">
-              <h1 className="text-light fw-bold" style={{ fontSize: '5rem' }}>
+              <h1 className="text-light fw-bold banner-font">
                 Tentang Semesta GYM
               </h1>
             </Container>

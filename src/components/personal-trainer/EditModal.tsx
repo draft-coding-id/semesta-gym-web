@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { api } from "../../services/api";
 import Select from "react-select";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 interface Trainer {
   name : string,
@@ -80,6 +82,7 @@ export default function EditModal({ ...props }) {
         setShowAlert(true);
         return;
       }
+      showSwal('Personal Trainer berhasil diubah');
       props.onHide();
     }).catch(error => {
       console.error(error);
@@ -98,10 +101,19 @@ export default function EditModal({ ...props }) {
         setShowAlert(true);
         return;
       }
+      showSwal('Personal Trainer berhasil dihapus');
       props.onHide();
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = (text:string) => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: text,
+      icon: "success",
+    })
   }
 
   return (

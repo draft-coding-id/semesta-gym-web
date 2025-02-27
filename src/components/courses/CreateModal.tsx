@@ -3,6 +3,8 @@ import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import Select from "react-select";
 import { api } from "../../services/api";
 import { Plus } from "lucide-react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function CreateModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState([]);
@@ -47,10 +49,20 @@ export default function CreateModal({ ...props }) {
         numberOfPractices: '',
         description: ''
       });
+      showSwal();
       props.onHide();
+      setShowAlert(false);
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  const showSwal = () => {
+    withReactContent(Swal).fire({
+      title: "Berhasil",
+      text: "Course berhasil dibuat",
+      icon: "success",
+    })
   }
 
   return (
