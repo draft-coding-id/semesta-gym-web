@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import Select from "react-select";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import numeral from 'numeral';
 
 interface Trainer {
   name : string,
@@ -21,6 +22,10 @@ export default function EditModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState<string[]>([]);
+  const [hoursOfPractice, setHoursOfPractice] = useState({
+    start: '',
+    end: ''
+  });
   const [data, setData] = useState<Trainer>({
     name: '',
     email: '',
@@ -48,9 +53,13 @@ export default function EditModal({ ...props }) {
         phone: props.trainer.User.phone,
         trainingFocus: props.trainer.TrainingFocus,
         hoursOfPractice: props.trainer.hoursOfPractice,
-        price: props.trainer.price,
+        price: numeral(props.trainer.price).format('0,0'),
         description: props.trainer.description,
         picture: undefined as File | undefined
+      })
+      setHoursOfPractice({
+        start: props.trainer.hoursOfPractice.split('-')[0],
+        end: props.trainer.hoursOfPractice.split('-')[1]
       })
     }
   }, [props.show, props.trainer]);
@@ -62,8 +71,14 @@ export default function EditModal({ ...props }) {
     if (data.password === '') {
       delete data.password;
     }
+
     const trainingFocusIds = data.trainingFocus.map((focus: any) => focus.id);
     data.trainingFocus = trainingFocusIds;
+
+    const formattedPrice = data.price.replace(/,/g, '');
+    data.price = formattedPrice;
+
+    data.hoursOfPractice = `${hoursOfPractice.start}-${hoursOfPractice.end}`;
 
     api.put('/trainers/'+ props.trainer.id, data,
       {
@@ -115,6 +130,16 @@ export default function EditModal({ ...props }) {
       icon: "success",
     })
   }
+
+  const formatNumber = (value: any) => {
+    const numberValue = value.replace(/[^0-9]/g, '');
+    return new Intl.NumberFormat().format(numberValue);
+  };
+
+  const handlePriceChange = (e:any) => {
+    const formattedValue = formatNumber(e.target.value);
+    setData({ ...data, price: formattedValue });
+  };
 
   return (
     <Modal
@@ -204,14 +229,26 @@ export default function EditModal({ ...props }) {
             />
           </Col>
           <Col md={6}>
-            <Form.Label htmlFor="jadwal">Jadwal Pelatihan</Form.Label>
-            <Form.Control
-              type="text"
-              id="jadwal"
-              aria-describedby=""
-              value={data.hoursOfPractice}
-              onChange={(e) => setData({ ...data, hoursOfPractice: e.target.value })}
-            />
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                  <Form.Label>Jadwal Mulai</Form.Label>
+                  <Form.Control type="time" 
+                    value={hoursOfPractice.start}
+                    onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, start: e.target.value })}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                  <Form.Label>Jadwal Selesai</Form.Label>
+                  <Form.Control type="time" 
+                    value={hoursOfPractice.end}
+                    onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, end: e.target.value })}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="price">Harga</Form.Label>
@@ -222,7 +259,7 @@ export default function EditModal({ ...props }) {
                 id="price"
                 aria-describedby=""
                 value={data.price}
-                onChange={(e) => setData({ ...data, price: e.target.value })}
+                onChange={handlePriceChange}
               />
             </InputGroup>
           </Col>

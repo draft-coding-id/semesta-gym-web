@@ -10,6 +10,10 @@ export default function CreateModal({ ...props }) {
   const [trainingFocus, setTrainingFocus] = useState([]);
   const [showAlert, setShowAlert] = useState(false);  
   const [alert, setAlert] = useState<string[]>([]);
+  const [hoursOfPractice, setHoursOfPractice] = useState({
+    start: '',
+    end: ''
+  });
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -31,6 +35,10 @@ export default function CreateModal({ ...props }) {
   }, []);
 
   const handleSubmit = () => {
+    const formattedPrice = data.price.replace(/,/g, '');
+    setData({ ...data, price: formattedPrice });
+    data.hoursOfPractice = `${hoursOfPractice.start}-${hoursOfPractice.end}`;
+
     api.post('/trainers/register', data, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -71,6 +79,16 @@ export default function CreateModal({ ...props }) {
       icon: "success",
     })
   }
+
+  const formatNumber = (value: any) => {
+    const numberValue = value.replace(/[^0-9]/g, '');
+    return new Intl.NumberFormat().format(numberValue);
+  };
+
+  const handlePriceChange = (e:any) => {
+    const formattedValue = formatNumber(e.target.value);
+    setData({ ...data, price: formattedValue });
+  };
 
   return (
     <Modal
@@ -153,13 +171,26 @@ export default function CreateModal({ ...props }) {
             />
           </Col>
           <Col md={6}>
-            <Form.Label htmlFor="jadwal">Jadwal Pelatihan</Form.Label>
-            <Form.Control
-              type="text"
-              id="jadwal"
-              aria-describedby=""
-              onChange={(e) => setData({ ...data, hoursOfPractice: e.target.value })}
-            />
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                  <Form.Label>Jadwal Mulai</Form.Label>
+                  <Form.Control type="time" 
+                    value={hoursOfPractice.start}
+                    onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, start: e.target.value })}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                  <Form.Label>Jadwal Selesai</Form.Label>
+                  <Form.Control type="time" 
+                    value={hoursOfPractice.end}
+                    onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, end: e.target.value })}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
           </Col>
           <Col md={6}>
             <Form.Label htmlFor="price">Harga</Form.Label>
@@ -169,7 +200,8 @@ export default function CreateModal({ ...props }) {
                 type="text"
                 id="price"
                 aria-describedby=""
-                onChange={(e) => setData({ ...data, price: e.target.value })}
+                value={data.price}
+                onChange={handlePriceChange}
               />
             </InputGroup>
           </Col>

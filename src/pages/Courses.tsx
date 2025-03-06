@@ -8,6 +8,7 @@ import logo from '../assets/images/logo.png';
 import EditModal from '../components/courses/EditModal';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import numeral from 'numeral';
 
 interface Course {
   id: number;
@@ -25,7 +26,7 @@ export default function Courses() {
   const [createModalShow, setCreateModalShow] = useState(false);
   const [editModalShow, setEditModalShow] = useState(false);
   const [priceCourse, setPriceCourse] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
 
   useEffect(() => {
     api.get('/courses/data-course').then(res => {
@@ -58,7 +59,7 @@ export default function Courses() {
     if(priceCourse === 0) {
       api.post('/pricelist', { 
         name: 'courses',
-        price: price
+        price: price.replace(/,/g, '')
       }).then(res => {
         showSwal('Harga Course berhasil diupdate');
         console.log(res);
@@ -67,7 +68,7 @@ export default function Courses() {
       });
     } else {
       api.put('/pricelist/courses', {
-        price: price
+        price: price.replace(/,/g, '')
       }).then(res => {
         showSwal('Harga Course berhasil diupdate');
         console.log(res);
@@ -84,6 +85,16 @@ export default function Courses() {
       icon: "success",
     })
   }
+
+  const formatNumber = (value: any) => {
+    const numberValue = value.replace(/[^0-9]/g, '');
+    return new Intl.NumberFormat().format(numberValue);
+  };
+
+  const handlePriceChange = (e:any) => {
+    const formattedValue = formatNumber(e.target.value);
+    setPrice(formattedValue);
+  };
 
   return (
     <Layout>
@@ -102,8 +113,8 @@ export default function Courses() {
             <Form.Control 
               type="text" 
               placeholder="0" 
-              value={price}
-              onChange={(e) => setPrice(e.target.value ? parseInt(e.target.value) : 0)}
+              value={numeral(price).format('0,0')}
+              onChange={handlePriceChange}
             />
           </Form.Group>
           <Button 

@@ -58,9 +58,9 @@ export default function Home() {
 
         <Row className="mt-5">
           <Col md={4}>
-            <Card>
+            <Card className="border-0 bg-transparent">
               <Card.Img variant="top" src={Dev1} />
-              <Card.Body>
+              <Card.Body className="px-0">
                 <Card.Title>Stanly</Card.Title>
                 <Card.Text>
                   IT-DEV
@@ -69,9 +69,9 @@ export default function Home() {
             </Card>
           </Col>
           <Col md={4}>
-            <Card>
+            <Card className="border-0 bg-transparent">
               <Card.Img variant="top" src={Dev2} />
-              <Card.Body>
+              <Card.Body className="px-0">
                 <Card.Title>Aldi</Card.Title>
                 <Card.Text>
                   IT-DEV
@@ -80,9 +80,9 @@ export default function Home() {
             </Card>
           </Col>
           <Col md={4}>
-          <Card>
+          <Card className="border-0 bg-transparent">
             <Card.Img variant="top" src={Dev3} />
-              <Card.Body>
+              <Card.Body className="px-0">
                 <Card.Title>Elvens</Card.Title>
                 <Card.Text>
                   IT-DEV

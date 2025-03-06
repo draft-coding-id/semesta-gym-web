@@ -9,6 +9,10 @@ export default function RegisterTrainer() {
   const [showAlert, setShowAlert] = useState(false);  
   const [alert, setAlert] = useState<string[]>([]);
   const [alertSuccess, setAlertSuccess] = useState(true);
+  const [hoursOfPractice, setHoursOfPractice] = useState({
+    start: '',
+    end: ''
+  });
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -31,6 +35,11 @@ export default function RegisterTrainer() {
   }, []);
 
   const handleSubmit = () => {
+    const formattedPrice = data.price.replace(/,/g, '');
+    data.price = formattedPrice;
+
+    data.hoursOfPractice = `${hoursOfPractice.start}-${hoursOfPractice.end}`;
+
     if (data.password !== data.confirmPassword) {
       setAlert(['Password and Confirm Password is not same']);
       setShowAlert(true);
@@ -70,6 +79,16 @@ export default function RegisterTrainer() {
       console.error(error);
     });
   }
+
+  const formatNumber = (value: any) => {
+    const numberValue = value.replace(/[^0-9]/g, '');
+    return new Intl.NumberFormat().format(numberValue);
+  };
+
+  const handlePriceChange = (e:any) => {
+    const formattedValue = formatNumber(e.target.value);
+    setData({ ...data, price: formattedValue });
+  };
 
   return (
     <div>
@@ -150,18 +169,31 @@ export default function RegisterTrainer() {
                       onChange={(e) => setData({ ...data, trainingFocus: e.map((focus: any) => focus.value) })}
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
-                    <Form.Label>Jadwal Pelatihan</Form.Label>
-                    <Form.Control type="text" 
-                      value={data.hoursOfPractice}
-                      onChange={(e) => setData({ ...data, hoursOfPractice: e.target.value })}
-                    />
-                  </Form.Group>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                        <Form.Label>Jadwal Mulai</Form.Label>
+                        <Form.Control type="time" 
+                          value={hoursOfPractice.start}
+                          onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, start: e.target.value })}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                        <Form.Label>Jadwal Selesai</Form.Label>
+                        <Form.Control type="time" 
+                          value={hoursOfPractice.end}
+                          onChange={(e) => setHoursOfPractice({ ...hoursOfPractice, end: e.target.value })}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput7">
                     <Form.Label>Harga Per-Bulan/Sesi</Form.Label>
-                    <Form.Control type="number" 
+                    <Form.Control type="text" 
                       value={data.price}
-                      onChange={(e) => setData({ ...data, price: e.target.value })}
+                      onChange={handlePriceChange}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
