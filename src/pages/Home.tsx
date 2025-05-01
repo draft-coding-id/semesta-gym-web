@@ -128,7 +128,10 @@ export default function Home() {
           {trainers.map((trainer, index) => ( 
             <Col md={4} key={index}>
               <Card>
-                <Card.Img variant="top" src={trainer.picture !== null ? BASE_URL + '/' + trainer.picture : logo} />
+                <div className="position-relative" style={{ height: '300px', overflow: 'hidden', alignItems: 'center', objectFit: 'cover', display: 'flex', justifyContent: 'center' }}>
+                  <img src={trainer.picture !== null ? BASE_URL + '/' + trainer.picture : logo} alt="" style={{ width: '100%' }}/>
+                </div>
+                {/* <Card.Img variant="top" src={trainer.picture !== null ? BASE_URL + '/' + trainer.picture : logo} /> */}
                 <Card.Body>
                   <Card.Title>
                     <Row>
